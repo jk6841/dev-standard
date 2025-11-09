@@ -1,0 +1,14 @@
+FROM node:25.1.0-alpine AS base
+WORKDIR /home
+
+FROM base AS builder
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM base AS runner
+COPY --from=builder /home/.next/standalone ./
+COPY --from=builder /home/public ./public
+COPY --from=builder /home/.next/static ./.next/static
+CMD ["node", "server.js"]

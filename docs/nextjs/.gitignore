@@ -1,0 +1,8 @@
+## ides and editors
+.vscode
+.idea
+
+## nextjs
+node_modules
+.next
+next-env.d.ts

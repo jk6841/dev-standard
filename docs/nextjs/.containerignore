@@ -1,0 +1,10 @@
+## git
+.git
+
+## container
+.containerignore
+Containerfile
+
+## nextjs
+.next
+node_modules
