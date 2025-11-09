@@ -1,0 +1,10 @@
+## git
+.git
+
+## container
+.containerignore
+Containerfile
+
+## react
+node_modules
+dist

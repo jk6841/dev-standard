@@ -1,0 +1,7 @@
+## ides and editors
+.vscode
+.idea
+
+## react
+node_modules
+dist
