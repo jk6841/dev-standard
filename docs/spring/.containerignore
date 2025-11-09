@@ -1,0 +1,11 @@
+## git
+.git
+.gitignore
+.gitattributes
+
+## container
+.containerignore
+Containerfile
+
+## docs
+*.md

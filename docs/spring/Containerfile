@@ -1,0 +1,28 @@
+FROM eclipse-temurin:25-jdk-alpine AS build
+
+WORKDIR /home
+
+COPY . .
+
+RUN chmod +x ./gradlew
+RUN --mount=type=cache,target=/root/.gradle ./gradlew clean bootJar
+
+RUN java -Djarmode=layertools -jar build/libs/*.jar extract
+RUN find ./dependencies -type f -name '*.jar' -exec echo -n {}: \; > classpath.info && \
+    find ./spring-boot-loader -type f \( -name '*.jar' -or -name '*.class' \) -exec echo -n {}: \; >> classpath.info && \
+    find ./snapshot-dependencies -type f -name '*.jar' -exec echo -n {}: \; >> classpath.info && \
+    find ./application -type f \( -name '*.jar' -or -name '*.class' \) -exec echo -n {}: \; >> classpath.info
+RUN jdeps --recursive --ignore-missing-deps --print-module-deps --multi-release 21 --class-path $(cat classpath.info) ./ > modules.list
+RUN jlink --add-modules $(cat modules.list) --strip-debug --no-man-pages --no-header-files --compress=2 --output /home/jre
+
+FROM alpine:3.22
+
+WORKDIR /home
+
+COPY --from=build /home/jre /home/jre
+COPY --from=build /home/dependencies/ ./
+COPY --from=build /home/spring-boot-loader/ ./
+COPY --from=build /home/snapshot-dependencies/ ./
+COPY --from=build /home/application/ ./
+
+ENTRYPOINT ["/home/jre/bin/java", "org.springframework.boot.loader.launch.JarLauncher"]
