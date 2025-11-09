@@ -1,0 +1,15 @@
+FROM golang:1.25.1 AS build
+
+WORKDIR /home
+
+COPY . .
+
+RUN CGO_ENABLED=0 GOOS=linux go build -o app
+
+FROM scratch
+
+WORKDIR /home
+
+COPY --from=build /home/app .
+
+CMD ["/home/app"]
