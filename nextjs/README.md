@@ -1,5 +1,4 @@
 # Next.js
 
 ## check list
-### Containerfile
-- base 이미지 버전
+### [공통](../README.md#check-list)

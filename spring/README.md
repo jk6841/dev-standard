@@ -9,9 +9,7 @@
 - configuration: `YAML`
 
 ## check list
-### Containerfile
-- base image version
-
+### [공통](../README.md#check-list)
 ### build.gradle.kts
 - task `jar` 비활성화
 ```kotlin
