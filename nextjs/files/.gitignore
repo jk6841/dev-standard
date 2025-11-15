@@ -6,3 +6,6 @@
 node_modules
 .next
 next-env.d.ts
+
+## os
+.DS_Store
